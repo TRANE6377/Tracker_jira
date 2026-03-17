@@ -258,20 +258,5 @@ Task_jira/
 
 ---
 
-## Советы для портфолио
 
-- **Скриншоты**:
-  - Экран регистрации/логина
-  - Страница задач (список + статусы)
-  - Открытые комментарии в карточке задачи
-- **Короткое видео (30–60 сек)**:
-  - регистрация → создание задачи → смена статуса → комментарий → удаление
-- **Демонстрация API через Postman/Insomnia**:
-  - `POST /auth/register`, `POST /auth/login` → получить `accessToken`
-  - Вставить токен в `Authorization: Bearer ...`
-  - Прогнать `POST /tasks`, `PATCH /tasks/:id`, `POST /tasks/:id/comments`
-- **Что подчеркнуть в описании**:
-  - раздельные слои backend (routes/controllers/services/repositories)
-  - миграции SQL и ограничения в БД (FK + `on delete cascade`)
-  - JWT interceptor на фронте (автоматическое добавление токена)
 

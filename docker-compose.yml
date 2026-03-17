@@ -1,0 +1,64 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: task-tracker-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: task_tracker
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - task_tracker_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d task_tracker"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build:
+      context: ./task-tracker-backend
+      dockerfile: Dockerfile
+    container_name: task-tracker-backend
+    restart: unless-stopped
+    env_file:
+      - ./task-tracker-backend/.env
+    environment:
+      NODE_ENV: development
+      PORT: 3000
+      DATABASE_URL: postgres://postgres:postgres@db:5432/task_tracker
+    ports:
+      - "3000:3000"
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./task-tracker-backend:/app
+      - backend_node_modules:/app/node_modules
+
+  frontend:
+    build:
+      context: ./task-tracker-frontend
+      dockerfile: Dockerfile
+    container_name: task-tracker-frontend
+    restart: unless-stopped
+    env_file:
+      - ./task-tracker-frontend/.env
+    environment:
+      NODE_ENV: development
+      VITE_API_URL: http://localhost:3000
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+    volumes:
+      - ./task-tracker-frontend:/app
+      - frontend_node_modules:/app/node_modules
+
+volumes:
+  task_tracker_pgdata:
+  backend_node_modules:
+  frontend_node_modules:
+

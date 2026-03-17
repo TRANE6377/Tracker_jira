@@ -1,0 +1,11 @@
+const ErrorCodes = {
+  VALIDATION: 'VALIDATION',
+  UNAUTHORIZED: 'UNAUTHORIZED',
+  FORBIDDEN: 'FORBIDDEN',
+  NOT_FOUND: 'NOT_FOUND',
+  CONFLICT: 'CONFLICT',
+  INTERNAL: 'INTERNAL',
+};
+
+module.exports = { ErrorCodes };
+
